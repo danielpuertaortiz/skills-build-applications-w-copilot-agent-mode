@@ -1,40 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Users() {
+const Users = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetch('https://legendary-chainsaw-jj994xpw4wj7c9p5-8000.app.github.dev/api/users')
       .then(response => response.json())
-      .then(data => setUsers(data));
+      .then(data => setUsers(data))
+      .catch(error => console.error('Error fetching users:', error));
   }, []);
 
   return (
-    <div className="card">
-      <div className="card-body">
-        <h1 className="card-title">Users</h1>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Joined</th>
+    <div className="container mt-4">
+      <h1 className="text-center">Users</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
             </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.joined}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default Users;

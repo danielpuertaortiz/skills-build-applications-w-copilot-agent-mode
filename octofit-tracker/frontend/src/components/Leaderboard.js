@@ -1,40 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Leaderboard() {
-  const [leaderboard, setLeaderboard] = useState([]);
+const Leaderboard = () => {
+  const [leaders, setLeaders] = useState([]);
 
   useEffect(() => {
     fetch('https://legendary-chainsaw-jj994xpw4wj7c9p5-8000.app.github.dev/api/leaderboard')
       .then(response => response.json())
-      .then(data => setLeaderboard(data));
+      .then(data => setLeaders(data))
+      .catch(error => console.error('Error fetching leaderboard:', error));
   }, []);
 
   return (
-    <div className="card">
-      <div className="card-body">
-        <h1 className="card-title">Leaderboard</h1>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Name</th>
-              <th>Points</th>
+    <div className="container mt-4">
+      <h1 className="text-center">Leaderboard</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leaders.map((leader, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{leader.name}</td>
+              <td>{leader.score}</td>
             </tr>
-          </thead>
-          <tbody>
-            {leaderboard.map((entry, index) => (
-              <tr key={entry.id}>
-                <td>{index + 1}</td>
-                <td>{entry.name}</td>
-                <td>{entry.score}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default Leaderboard;
